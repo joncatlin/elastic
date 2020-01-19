@@ -24,14 +24,14 @@ services:
     #   - 9200:9200
     networks:
       - elastic
-  # kibana:
-  #   image: docker.elastic.co/kibana/kibana:7.1.1
-  #   ports:
-  #     - 5601:5601
-  #   networks:
-  #     - elastic
-  #   depends_on: 
-  #     - es01
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.1.1
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
+    depends_on: 
+      - es01
 
   # es02:
   #   image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
