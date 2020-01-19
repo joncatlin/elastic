@@ -7,7 +7,7 @@ services:
       - cluster.name=es-docker-cluster
       - discovery.type=single-node
 #      - discovery.seed_hosts=es02,es03
-      - cluster.initial_master_nodes=es01
+#      - cluster.initial_master_nodes=es01
 # disabled swap so ignore the following param
 # also problems setting the ulimits for memlock, could not make memlock work, despite 
 # numerous articles read and solutions tried
