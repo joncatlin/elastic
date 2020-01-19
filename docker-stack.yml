@@ -7,12 +7,15 @@ services:
       - cluster.name=es-docker-cluster
       - discovery.seed_hosts=es02,es03
       - cluster.initial_master_nodes=es01
-      - bootstrap.memory_lock=true
+# disabled swap so ignore the following param
+# also problems setting the ulimits for memlock, could not make memlock work, despite 
+# numerous articles read and solutions tried
+      - bootstrap.memory_lock=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+    # ulimits:
+    #   memlock:
+    #     soft: -1
+    #     hard: -1
     volumes:
       - type: bind
         source: /mnt/swarm-shared/joncatlin-development/shared-volumes/elastic-vol1
