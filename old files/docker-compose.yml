@@ -1,0 +1,81 @@
+version: '3.7' 
+ 
+services: 
+ 
+  elasticsearch: 
+    build: 
+      context: . 
+      dockerfile: ./elasticsearch/Dockerfile 
+    image: elasticsearch 
+    ports: 
+      - "9200:9200" 
+      - "9300:9300" 
+    healthcheck: 
+      test: curl -XGET \"localhost:9200/_cluster/health?wait_for_status=green&timeout=60s\" | grep \"green\" | exit 0 || exit 1 
+      interval: 1m30s 
+      timeout: 65s 
+      retries: 3 
+    networks: 
+      - elk 
+ 
+  logstash: 
+    build: 
+      context: . 
+      dockerfile: ./logstash/Dockerfile 
+    image: logstash 
+    ports: 
+      - "5000:5000" 
+      - "9600:9600" 
+    environment:  
+      ACCEPT_EULA: "Y" 
+#      DATABASE_SERVER: mssql 
+#      DATABASE_PORT: 1433 
+#      DATABASE_DATABASE: Names 
+#      DATABASE_USERNAME: sa 
+#      DATABASE_PASSWORD_FILEPATH: /run/secrets/db_password 
+      # DATABASE_QUERY1: "SELECT Top 5 FirstName FROM dbo.Names;" 
+    healthcheck: 
+      test: curl -XGET 'localhost:9600/?pretty' || exit 1 
+      interval: 1m30s 
+      timeout: 10s 
+      retries: 3 
+    networks: 
+      - elk 
+    depends_on: 
+      - elasticsearch 
+#    secrets: 
+ #     - db_password 
+ 
+  kibana: 
+    build: 
+      context: . 
+      dockerfile: ./kibana/Dockerfile 
+    image: kibana 
+    ports: 
+      - "5601:5601" 
+    healthcheck: 
+      test: curl -XGET "http://elasticsearch:9200/_cat/health?h=status" | grep \"green\" | exit 0 || exit 1 
+      interval: 1m30s 
+      timeout: 10s 
+      retries: 3 
+    networks: 
+      - elk 
+    depends_on: 
+      - elasticsearch 
+ 
+  # filebeat: 
+  #   build: 
+  #     context: . 
+  #     dockerfile: ./filebeat/Dockerfile 
+  #   image: filebeat
+  #   networks: 
+  #     - elk 
+  #   depends_on: 
+  #     - logstash
+ 
+networks: 
+  elk: 
+ 
+#secrets: 
+#  db_password: 
+#    file: ./sql/db_password.txt 

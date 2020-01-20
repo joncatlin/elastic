@@ -1,0 +1,33 @@
+filebeat.config:
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: false
+
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
+
+processors:
+- add_cloud_metadata: ~
+
+#output.logstash:
+#  hosts: ["logstash:5044"]
+#  loadbalance: false
+#  index: filebeat
+output.elasticsearch:
+  hosts: 'es01'
+  username: 'elastic'
+  password: 'changeme'
+
+output.console:
+  pretty: true
+
+logging.level: debug
+logging.to_files: true
+logging.files:
+  path: /logs
+  name: filebeat
+  keepfiles: 7
+  permissions: 0644
+  

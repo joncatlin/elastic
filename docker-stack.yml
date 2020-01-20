@@ -52,6 +52,11 @@ services:
       - type: bind
         source: /mnt/swarm-shared/joncatlin-development/shared-volumes/filebeat-vol1
         target: /usr/share/filebeat/data
+      # mount the config
+      - type: bind
+        source: /mnt/swarm-shared/joncatlin-development/shared-volumes/filebeat-config/filebeat.yml
+        target: /usr/share/filebeat/filebeat.yml:ro
+
       # This is needed for filebeat to load container log path as specified in filebeat.yml
       - /var/lib/docker/containers/:/var/lib/docker/containers/:ro
 
@@ -68,7 +73,9 @@ services:
 #      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME:-elastic}
 #      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD:-changeme}
     # disable strict permission checks
-    command: ["--strict.perms=false"]
+    command: 
+      - "-e"
+      - "--strict.perms=false"
     deploy:
       mode: global
 

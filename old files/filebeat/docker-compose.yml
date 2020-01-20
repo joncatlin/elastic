@@ -1,0 +1,16 @@
+version: '3.7' 
+ 
+services: 
+ 
+  filebeat: 
+    build: 
+      context: . 
+      dockerfile: ./filebeat/Dockerfile 
+    image: filebeat
+    networks: 
+      - elk 
+    # depends_on: 
+    #   - logstash
+ 
+networks: 
+  elk: 
