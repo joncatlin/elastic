@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+
+# How to Tune Elastic Beats Performance: A Practical Example with Batch Size, Worker Count, and More
+  # https://www.elastic.co/blog/how-to-tune-elastic-beats-performance-a-practical-example-with-batch-size-worker-count-and-more?blade=tw&hulk=social
+  random-logger:
+    build:
+      context: .
+      dockerfile: ./random-logger/Dockerfile
+    image: jon_random-logger
+
+    # https://github.com/docker/swarmkit/issues/1951
+    hostname: "{{.Node.Hostname}}-randmom-logger"
+
+    networks:
+      - elk
+    environment:
+      # How often to generate a log message that spans multiple lines
+      - MULTILINE_FREQUENCY=10
+
+      # The total number of messags to create before finishing
+      - TOTAL_MSGS=10000000000000000
+
+      # The period to sleep, between LOW and HIGH in seconds
+      - LOW_SLEEP_PERIOD=1
+      - HIGH_SLEEP_PERIOD=10
+
+      # The number of log messages to generate, between LOW and HIGH
+      - LOW_MSGS_TO_GENERATE=10
+      - HIGH_MSGS_TO_GENERATE=2000
+
+networks:
+  elk:

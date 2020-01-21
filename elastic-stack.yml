@@ -1,0 +1,42 @@
+version: '3.7'
+services:
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.1.1
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+#      - discovery.seed_hosts=es02,es03
+#      - cluster.initial_master_nodes=es01
+# disabled swap so ignore the following param
+# also problems setting the ulimits for memlock, could not make memlock work, despite 
+# numerous articles read and solutions tried
+      - bootstrap.memory_lock=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    # ulimits:
+    #   memlock:
+    #     soft: -1
+    #     hard: -1
+    volumes:
+      - type: bind
+        source: /mnt/swarm-shared/joncatlin-development/shared-volumes/elastic-vol1
+        target: /usr/share/elasticsearch/data
+    # ports:
+    #   - 9200:9200
+    networks:
+      - elastic
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.1.1
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
+    environment:
+#      SERVER_NAME: kibana.example.org
+      ELASTICSEARCH_HOSTS: http://es01:9200/
+    depends_on: 
+      - es01
+
+networks:
+  elastic:

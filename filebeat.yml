@@ -1,33 +1,94 @@
-filebeat.config:
-  modules:
-    path: ${path.config}/modules.d/*.yml
-    reload.enabled: false
+# https://github.com/elastic/beats/blob/master/filebeat/filebeat.reference.yml
 
+filebeat.inputs:
+
+# Process log files from docker containers
+- type: docker
+  enabled: true
+  containers:
+    stream: all # can be all, stdout or stderr
+    ids:
+      - '*'
+
+  # Create a single log event by combining lines that don't start with a timestamep into a previous line that does
+
+  # elasticsearch pattern for beginning of line
+  #^\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2},\d+\]\[\w+\s*\]
+  #
+  # logstash pattern for beginning of line
+  #^\[\w+\s*\] \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+ 
+  #
+  # concord pattern for beginning of line
+  #^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d+[\+\-]\d{2}:\d{2} \[\w+\] 
+  multiline.pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d+[\+\-]\d{2}:\d{2} \[\w+\] |^\[\w+\s*\] \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+ |^\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2},\d+\]\[\w+\s*\]'
+  multiline.negate: true
+  multiline.match: after
+
+
+#========================== Filebeat autodiscover ==============================
+# See this URL on how to run Apache2 Filebeat module: # https://www.elastic.co/guide/en/beats/filebeat/current/running-on-docker.html
 filebeat.autodiscover:
   providers:
     - type: docker
+      # https://www.elastic.co/guide/en/beats/filebeat/current/configuration-autodiscover-hints.html
+      # This URL alos contains instructions on multi-line logs
       hints.enabled: true
 
+#================================ Processors ===================================
 processors:
-- add_cloud_metadata: ~
+# - add_cloud_metadata: ~
+- add_docker_metadata: ~
+- add_locale:
+    format: offset
+- add_host_metadata:
+    netinfo.enabled: true
 
-#output.logstash:
-#  hosts: ["logstash:5044"]
-#  loadbalance: false
-#  index: filebeat
-output.elasticsearch:
-  hosts: 'es01'
-  username: 'elastic'
-  password: 'changeme'
+#========================== Elasticsearch output ===============================
+# output.elasticsearch:
+#   hosts: ["elasticsearch:9200"]
 
-output.console:
-  pretty: true
+#========================== Logstash output ===============================
+output.logstash:
+  # Boolean flag to enable or disable the output module.
+  enabled: true
 
-logging.level: debug
+  # The Logstash hosts
+  hosts: ["logstash:5044"]
+
+
+#============================== Dashboards =====================================
+setup.dashboards:
+  enabled: true
+
+  # In case the archive contains the dashboards from multiple Beats, this lets you
+  # select which one to load. You can load all the dashboards in the archive by
+  # setting this to the empty string.
+  beat: filebeat
+  
+  # If true and Kibana is not reachable at the time when dashboards are loaded,
+  # it will retry to reconnect to Kibana instead of exiting with an error.
+  retry.enabled: true
+
+  # Duration interval between Kibana connection retries.
+  retry.interval: 1s
+
+  # Maximum number of retries before exiting with an error, 0 for unlimited retrying.
+  retry.maximum: 0
+
+#============================== Kibana =========================================
+setup.kibana:
+  host: "kibana:5601"
+
+#============================== Console Output =================================
+
+#output.console:
+#  pretty: true
+
+#============================== Logging Parameters for Filebeat=================
+logging.level: info
 logging.to_files: true
 logging.files:
   path: /logs
   name: filebeat
   keepfiles: 7
   permissions: 0644
-  
