@@ -13,8 +13,8 @@ ENV TOTAL_MSGS 100
 ENV MULTILINE_FREQUENCY 10
 
 # The period to sleep, between LOW and HIGH in seconds. Can be fraction such as 0.5 seconds
-ENV LOW_SLEEP_PERIOD 1
-ENV HIGH_SLEEP_PERIOD 5
+ENV LOW_SLEEP_PERIOD 1000
+ENV HIGH_SLEEP_PERIOD 5000
 
 # The number of log messages to generate, between LOW and HIGH
 ENV LOW_MSGS_TO_GENERATE 10

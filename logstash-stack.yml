@@ -7,13 +7,16 @@ services:
       - "5044:5044"
     volumes:
       - type: bind
-        source: /mnt/swarm-shared/joncatlin-development/repos/elastic/logstash/config
+#        source: /mnt/swarm-shared/joncatlin-development/repos/elastic/logstash/config
+        source: /mnt/shared_docker/joncatlin/GitHub/elastic/logstash/config
         target: /usr/share/logstash/config
       - type: bind
-        source: /mnt/swarm-shared/joncatlin-development/repos/elastic/logstash/pipeline
+#        source: /mnt/swarm-shared/joncatlin-development/repos/elastic/logstash/pipeline
+        source: /mnt/shared_docker/joncatlin/GitHub/elastic/logstash/pipeline
         target: /usr/share/logstash/pipeline
       - type: bind
-        source: /mnt/swarm-shared/joncatlin-development/repos/elastic/logstash/settings
+#        source: /mnt/swarm-shared/joncatlin-development/repos/elastic/logstash/settings
+        source: /mnt/shared_docker/joncatlin/GitHub/elastic/logstash/settings
         target: /usr/share/logstash/settings
     # environment: 
     #   ACCEPT_EULA: "Y"

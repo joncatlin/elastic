@@ -22,12 +22,12 @@ services:
       # The total number of messags to create before finishing
       - TOTAL_MSGS=10000000000000000
 
-      # The period to sleep, between LOW and HIGH in seconds
-      - LOW_SLEEP_PERIOD=1
-      - HIGH_SLEEP_PERIOD=10
+      # The period to sleep, between LOW and HIGH in milli-seconds
+      - LOW_SLEEP_PERIOD=50
+      - HIGH_SLEEP_PERIOD=200
 
       # The number of log messages to generate, between LOW and HIGH
-      - LOW_MSGS_TO_GENERATE=10
+      - LOW_MSGS_TO_GENERATE=100
       - HIGH_MSGS_TO_GENERATE=2000
 
 networks:

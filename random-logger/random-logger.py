@@ -39,4 +39,4 @@ while (count < total_msgs):
     
     # Determine how long to sleep before sending more messages
     sleep_period = random.randint(low_sleep_period,high_sleep_period)
-    time.sleep(sleep_period)
+    time.sleep(sleep_period/1000)
