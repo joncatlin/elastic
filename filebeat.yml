@@ -12,17 +12,9 @@ filebeat.inputs:
 
   # Create a single log event by combining lines that don't start with a timestamep into a previous line that does
 
-  # elasticsearch pattern for beginning of line
-  #^\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2},\d+\]\[\w+\s*\]
-  #
-  # logstash pattern for beginning of line
-  #^\[\w+\s*\] \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+ 
-  #
-  # concord pattern for beginning of line
-  #^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d+[\+\-]\d{2}:\d{2} \[\w+\] 
-  multiline.pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d+[\+\-]\d{2}:\d{2} \[\w+\] |^\[\w+\s*\] \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+ |^\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2},\d+\]\[\w+\s*\]'
-  multiline.negate: true
-  multiline.match: after
+#  multiline.pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d+[\+\-]\d{2}:\d{2} \[\w+\] |^\[\w+\s*\] \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+ |^\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2},\d+\]\[\w+\s*\]'
+#  multiline.negate: true
+#  multiline.match: after
 
 
 #========================== Filebeat autodiscover ==============================

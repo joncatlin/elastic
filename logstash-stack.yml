@@ -20,6 +20,9 @@ services:
         target: /usr/share/logstash/settings
     # environment: 
     #   ACCEPT_EULA: "Y"
+    deploy:
+      mode: replicated
+      replicas: 2
     networks:
       - elastic
 

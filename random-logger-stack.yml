@@ -11,7 +11,7 @@ services:
     image: jon_random-logger
 
     # https://github.com/docker/swarmkit/issues/1951
-    hostname: "{{.Node.Hostname}}-randmom-logger"
+    hostname: "{{.Node.Hostname}}-{{.Task.Slot}}-randmom-logger"
 
     networks:
       - elk
@@ -29,6 +29,9 @@ services:
       # The number of log messages to generate, between LOW and HIGH
       - LOW_MSGS_TO_GENERATE=100
       - HIGH_MSGS_TO_GENERATE=2000
-
+    deploy:
+      mode: replicated
+      replicas: 3
+  
 networks:
   elk:
