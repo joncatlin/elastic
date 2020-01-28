@@ -9,7 +9,7 @@ services:
     user: root
     volumes:
       - type: bind
-        source: /mnt/swarm-shared/joncatlin-development/shared-volumes/filebeat-vol{{.Task.Slot}}
+        source: /mnt/swarm-shared/joncatlin-development/shared-volumes/filebeat-vol-{{.Node.Hostname}}
 #        source: /mnt/shared_docker/joncatlin/shared-volumes/filebeat-vol-{{.Node.Hostname}}
         target: /usr/share/filebeat/data
       # mount the config
