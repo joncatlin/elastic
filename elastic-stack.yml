@@ -19,8 +19,8 @@ services:
     #     hard: -1
     volumes:
       - type: bind
-#        source: /mnt/swarm-shared/joncatlin-development/shared-volumes/elastic-vol1
-        source: /mnt/shared_docker/joncatlin/shared-volumes/elastic-vol1
+        source: /mnt/swarm-shared/joncatlin-development/shared-volumes/elastic-vol1
+#        source: /mnt/shared_docker/joncatlin/shared-volumes/elastic-vol1
         target: /usr/share/elasticsearch/data
     # ports:
     #   - 9200:9200

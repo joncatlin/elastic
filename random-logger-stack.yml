@@ -23,12 +23,12 @@ services:
       - TOTAL_MSGS=10000000000000000
 
       # The period to sleep, between LOW and HIGH in milli-seconds
-      - LOW_SLEEP_PERIOD=50
-      - HIGH_SLEEP_PERIOD=200
+      - LOW_SLEEP_PERIOD=1000
+      - HIGH_SLEEP_PERIOD=20000
 
       # The number of log messages to generate, between LOW and HIGH
-      - LOW_MSGS_TO_GENERATE=100
-      - HIGH_MSGS_TO_GENERATE=2000
+      - LOW_MSGS_TO_GENERATE=1
+      - HIGH_MSGS_TO_GENERATE=3
     deploy:
       mode: replicated
       replicas: 3

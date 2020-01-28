@@ -9,13 +9,13 @@ services:
     user: root
     volumes:
       - type: bind
-#        source: /mnt/swarm-shared/joncatlin-development/shared-volumes/filebeat-vol{{.Task.Slot}}
-        source: /mnt/shared_docker/joncatlin/shared-volumes/filebeat-vol-{{.Node.Hostname}}
+        source: /mnt/swarm-shared/joncatlin-development/shared-volumes/filebeat-vol{{.Task.Slot}}
+#        source: /mnt/shared_docker/joncatlin/shared-volumes/filebeat-vol-{{.Node.Hostname}}
         target: /usr/share/filebeat/data
       # mount the config
       - type: bind
-#        source: /mnt/swarm-shared/joncatlin-development/repos/elastic/filebeat.yml
-        source: /mnt/shared_docker/joncatlin/GitHub/elastic/filebeat.yml
+        source: /mnt/swarm-shared/joncatlin-development/repos/elastic/filebeat.yml
+#        source: /mnt/shared_docker/joncatlin/GitHub/elastic/filebeat.yml
         target: /usr/share/filebeat/filebeat.yml
 
       # This is needed for filebeat to load container log path as specified in filebeat.yml
